@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quarantine Mail Template Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f5f9;--surface:#ffffff;--surface2:#f6f8fb;--border:#d9dfe9;--txt:#1b2434;--mut:#5b6679;--pri:#2563eb;--pri-t:#fff;--head:#14213d;--code:#f1f5f9;--code-b:#d9dfe9;--blue:#2563eb;--teal:#0d9488;--amber:#d97706;--violet:#7c3aed;--red:#dc2626;--green:#16a34a;--k:#a21caf;--s:#b45309;--d:#0369a1;--f:#15803d}
+[data-theme=dark]{--bg:#0f1623;--surface:#18212f;--surface2:#1f2a3b;--border:#2e3b50;--txt:#e5eaf3;--mut:#9aa7bd;--pri:#4f8df7;--pri-t:#0b1220;--head:#0a101b;--code:#0c1220;--code-b:#2e3b50;--blue:#4f8df7;--teal:#2dd4bf;--amber:#fbbf24;--violet:#a78bfa;--red:#f87171;--green:#4ade80;--k:#f0abfc;--s:#fcd34d;--d:#7dd3fc;--f:#86efac}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5}
+.top{background:var(--head);color:#fff;border-bottom:4px solid var(--pri)}
+.top .in{max-width:1500px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.top h1{margin:0;font-size:1.3rem;font-weight:700}
+.top p{margin:2px 0 0;font-size:.85rem;color:#aab6cc}
+.theme{border:1px solid #4a5a78;background:transparent;color:#fff;padding:8px 14px;border-radius:6px;font:inherit;font-size:.85rem;cursor:pointer}
+.theme:hover{background:#22304d}
+.wrap{max-width:1500px;margin:0 auto;padding:24px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:24px;overflow:hidden}
+.ch{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surface2);border-left:5px solid var(--blue)}
+.ch h2{margin:0;font-size:1rem;font-weight:600;flex:1}
+.ch .num{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;font-size:.8rem;font-weight:700;color:#fff;background:var(--blue)}
+.c2{border-left-color:var(--violet)}.c2 .num{background:var(--violet)}
+.c3{border-left-color:var(--teal)}.c3 .num{background:var(--teal)}
+.c4{border-left-color:var(--amber)}.c4 .num{background:var(--amber)}
+.cb{padding:20px}
+label{display:block;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin-bottom:6px}
+input[type=date],select{width:100%;padding:10px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--txt);font:inherit;outline:none}
+[data-theme=dark] input[type=date]{color-scheme:dark}
+input[type=date]:focus,select:focus,textarea:focus{border-color:var(--pri);box-shadow:0 0 0 3px color-mix(in srgb,var(--pri) 25%,transparent)}
+.bar{display:grid;grid-template-columns:minmax(150px,220px) minmax(150px,220px) 1fr;gap:16px;align-items:end;margin-bottom:16px}
+@media(max-width:760px){.bar{grid-template-columns:1fr 1fr}.bar .chips{grid-column:1/-1}}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 14px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--txt);cursor:pointer;font:inherit;font-size:.85rem}
+.chip:hover{border-color:var(--pri);color:var(--pri)}
+.btn{border:1px solid var(--pri);cursor:pointer;font:inherit;font-weight:600;font-size:.85rem;color:var(--pri-t);padding:8px 16px;border-radius:6px;background:var(--pri)}
+.btn:hover{filter:brightness(1.1)}
+.btn.ok{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
+.btn.copy{position:absolute;top:10px;right:10px;padding:6px 14px}
+.codebox{border:1px solid var(--code-b);border-radius:6px;overflow:hidden;background:var(--code)}
+.codehead{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--code-b);background:var(--surface2);font-size:.8rem;color:var(--mut);font-weight:600}
+.codehead .btn.copy{position:static}
+pre.kql{margin:0;padding:16px 18px;width:100%;color:var(--txt);font:400 clamp(11px,.5vw + 9px,14px)/1.6 'JetBrains Mono',ui-monospace,monospace;overflow:auto;max-height:min(75vh,720px)}
+@media(min-width:1000px){pre.kql{max-height:none}}
+.k{color:var(--k);font-weight:500}.s{color:var(--s)}.d{color:var(--d);font-weight:700}.f{color:var(--f)}
+.up{display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start}
+@media(max-width:860px){.up{grid-template-columns:1fr}}
+.drop{border:2px dashed var(--violet);border-radius:8px;padding:26px 16px;text-align:center;cursor:pointer;background:var(--surface2)}
+.drop:hover,.drop.over{background:color-mix(in srgb,var(--violet) 12%,var(--surface))}
+.drop b{color:var(--violet)}
+.drop small{display:block;color:var(--mut);margin-top:6px}
+.hint{font-size:.82rem;color:var(--mut);margin:10px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:14px 16px;border:1px solid var(--border);border-left:5px solid var(--blue);border-radius:6px;background:var(--surface2)}
+.stat b{display:block;font-size:1.6rem;line-height:1.2}
+.stat span{font-size:.75rem;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.stat:nth-child(2){border-left-color:var(--violet)}.stat:nth-child(3){border-left-color:var(--teal)}.stat:nth-child(4){border-left-color:var(--amber)}
+.msg{margin-top:12px;padding:10px 14px;border-radius:6px;font-size:.88rem;border:1px solid}
+.msg.err{background:color-mix(in srgb,var(--red) 12%,var(--surface));border-color:var(--red)}
+.msg.good{background:color-mix(in srgb,var(--green) 12%,var(--surface));border-color:var(--green)}
+.out{white-space:pre-wrap;word-wrap:break-word;font:13.5px/1.65 'JetBrains Mono',ui-monospace,monospace;background:var(--code);border:1px solid var(--code-b);border-radius:6px;padding:14px;max-height:460px;overflow:auto;color:var(--txt)}
+.out b{color:var(--amber)}
+[data-theme=light] .out b{color:#9a3412}
+.outgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:960px){.outgrid{grid-template-columns:1fr}}
+.outgrid .card{margin:0}
+.rel{position:relative}
+.empty{color:var(--mut);text-align:center;padding:34px;border:2px dashed var(--border);border-radius:8px;background:var(--surface);margin-bottom:24px}
+textarea{width:100%;height:180px;padding:12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--txt);font:13px 'JetBrains Mono',monospace;outline:none;resize:vertical}
+.hide{display:none!important}
+footer{text-align:center;color:var(--mut);font-size:.82rem;padding:8px 0 32px}
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <div><h1>Quarantine Mail Template Generator</h1><p>Build the KQL, load the exported CSV, pick a section, get the incident templates.</p></div>
+  <button class="theme" id="themeBtn">☾ Dark mode</button>
+</div></div>
+
+<div class="wrap">
+
+<section class="card">
+  <div class="ch"><span class="num">1</span><h2>KQL Query Builder</h2></div>
+  <div class="cb">
+    <div class="bar">
+      <div><label for="dStart">Start date</label><input type="date" id="dStart"></div>
+      <div><label for="dEnd">End date</label><input type="date" id="dEnd"></div>
+      <div class="chips">
+        <button class="chip" data-p="0">Today</button>
+        <button class="chip" data-p="1">Yesterday</button>
+        <button class="chip" data-p="2">Last 2 days</button>
+        <button class="chip" data-p="7">Last 7 days</button>
+      </div>
+    </div>
+    <div class="codebox">
+      <div class="codehead"><span>KQL · Advanced Hunting (start 00:00:00 – end 23:59:00)</span><button class="btn copy" id="copyKql">Copy KQL</button></div>
+      <pre class="kql" id="kqlOut"></pre>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ch c2"><span class="num">2</span><h2>Load Raw Data &amp; Choose Section</h2></div>
+  <div class="cb">
+    <div class="up">
+      <div>
+        <div class="drop" id="drop"><b>Click to choose a CSV file</b> or drag &amp; drop it here<small>Exported KQL results (SetNumber, Recipient, SenderAddress, SenderIP, TimeReceived, SubjectLine, QuarantineReason, DetectionTechnology)</small></div>
+        <input type="file" id="file" accept=".csv,text/csv" class="hide">
+        <div id="fileMsg"></div>
+      </div>
+      <div>
+        <label for="section">Section (SetNumber)</label>
+        <select id="section" disabled><option>Load a CSV first</option></select>
+        <p class="hint">Only the rows of the selected section are parsed into the template. Other sections are ignored.</p>
+      </div>
+    </div>
+    <div class="stats hide" id="stats">
+      <div class="stat"><b id="sTotal">0</b><span>Total rows</span></div>
+      <div class="stat"><b id="sSecs">0</b><span>Sections</span></div>
+      <div class="stat"><b id="sSel">0</b><span>Rows in section</span></div>
+      <div class="stat"><b id="sRec">0</b><span>Recipients</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div id="empty" class="empty">Your generated templates will appear here once a CSV is loaded.</div>
+  <div class="outgrid hide" id="outgrid" style="margin-bottom:24px">
+    <div class="card rel">
+      <div class="ch c3"><span class="num">3</span><h2>Incident Description</h2><button class="btn" data-copy="desc">Copy</button></div>
+      <div class="cb"><div class="out" id="descBox"></div></div>
+    </div>
+    <div class="card rel">
+      <div class="ch c3"><span class="num">3</span><h2>Incident Analysis</h2><button class="btn" data-copy="anal">Copy</button></div>
+      <div class="cb"><div class="out" id="analBox"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ch c4"><span class="num">4</span><h2>Defang Tool</h2></div>
+  <div class="cb"><div class="outgrid">
+    <div>
+      <label for="dfIn">Paste text to defang</label>
+      <textarea id="dfIn" placeholder="Paste domains, URLs, or IPs here... e.g. google.com or 8.8.8.8"></textarea>
+      <button class="btn" id="dfBtn" style="margin-top:12px;width:100%;padding:11px">Defang Text</button>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><label style="margin:0">Defanged result</label><button class="btn" data-copy="df">Copy</button></div>
+      <div class="out" id="dfOut" style="height:180px;color:var(--mut)">Your defanged text will appear here.</div>
+    </div>
+  </div></div>
+</section>
+
+<footer>Created for efficient SOC incident reporting. Runs fully in your browser; no data is uploaded.</footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const store={desc:'',anal:'',df:''};
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const render=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+const defangDots=s=>s.replace(/\./g,'[.]');
+
+/* ---------- KQL builder ---------- */
+const KQL=(a,b)=>`let StartTime = datetime(${a} 00:00:00);
+let EndTime = datetime(${b} 23:59:00);
+let Recipients = dynamic([
+    "john@stellarlife.com",
+    "prashant.verma@stellarlife.com",
+    "brandon.jordan@stellarlife.com",
+    "nick.argol@stellarlife.com",
+    "dawn.wynn@stellarlife.com"
+]);
+EmailEvents
+| where Timestamp between (StartTime .. EndTime)
+| where RecipientEmailAddress in~ (Recipients)
+| where DeliveryLocation =~ "Quarantine"
+| where OrgLevelPolicy !contains "Block" or isempty(OrgLevelPolicy)
+| where UserLevelAction !contains "Block" or isempty(UserLevelAction)
+| extend SenderIP = coalesce(SenderIPv4, SenderIPv6)
+| extend QuarantineReason = case(
+    isnotempty(EmailActionPolicy), tostring(EmailActionPolicy),
+    isnotempty(ThreatTypes), tostring(ThreatTypes),
+    "Other / Verify in Quarantine"
+)
+| project
+    Recipient = RecipientEmailAddress,
+    SenderAddress = SenderFromAddress,
+    SenderIP,
+    TimeReceived = Timestamp,
+    SubjectLine = Subject,
+    QuarantineReason,
+    DetectionTechnology = DetectionMethods
+| order by TimeReceived desc
+| serialize RowNum = row_number()
+| extend SetNumber = tostring(((RowNum - 1) % 4) + 1)
+| project SetNumber, Recipient, SenderAddress, SenderIP, TimeReceived, SubjectLine, QuarantineReason, DetectionTechnology
+| order by SetNumber asc, TimeReceived desc`;
+let kqlText='';
+function hl(code){
+  let h=esc(code);
+  h=h.replace(/(&quot;|")([^"\n]*)"/g,'<span class="s">"$2"</span>');
+  h=h.replace(/\b(datetime\(\d{4}-\d{2}-\d{2} [\d:]+\))/g,'<span class="d">$1</span>');
+  h=h.replace(/\b(let|where|extend|project|order by|serialize|between|in~|dynamic|asc|desc|and|or|case)\b/g,'<span class="k">$1</span>');
+  h=h.replace(/\b(coalesce|isnotempty|isempty|tostring|row_number)\b/g,'<span class="f">$1</span>');
+  return h;
+}
+function updateKql(){
+  let a=$('dStart').value,b=$('dEnd').value;
+  if(!a||!b)return;
+  if(a>b){[a,b]=[b,a];$('dStart').value=a;$('dEnd').value=b;}
+  kqlText=KQL(a,b);
+  // highlight, then re-wrap the datetime values so they stand out
+  $('kqlOut').innerHTML=hl(kqlText);
+}
+const iso=d=>{const z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`};
+function preset(days){
+  const e=new Date(),s=new Date();
+  if(days===1){s.setDate(s.getDate()-1);e.setDate(e.getDate()-1);}
+  else if(days>=2){s.setDate(s.getDate()-(days-1));}
+  $('dStart').value=iso(s);$('dEnd').value=iso(e);updateKql();
+}
+document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>preset(+c.dataset.p));
+$('dStart').onchange=$('dEnd').onchange=updateKql;
+preset(0);
+
+/* ---------- CSV parsing ---------- */
+function parseCSV(text){
+  text=text.replace(/^\uFEFF/,'');
+  const rows=[];let row=[],f='',q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; }
+      else f+=c;
+    }else if(c==='"')q=true;
+    else if(c===','){row.push(f);f='';}
+    else if(c==='\n'||c==='\r'){
+      if(c==='\r'&&text[i+1]==='\n')i++;
+      row.push(f);f='';
+      if(row.some(x=>x.trim()!==''))rows.push(row);
+      row=[];
+    }else f+=c;
+  }
+  row.push(f);if(row.some(x=>x.trim()!==''))rows.push(row);
+  return rows;
+}
+const norm=h=>h.toLowerCase().replace(/\[.*?\]/g,'').replace(/[^a-z]/g,'');
+let data=[];
+function toObjects(rows){
+  const head=rows[0].map(norm);
+  const idx=n=>head.indexOf(n);
+  const map={set:idx('setnumber'),rec:idx('recipient'),snd:idx('senderaddress'),ip:idx('senderip'),time:idx('timereceived'),sub:idx('subjectline'),qr:idx('quarantinereason'),det:idx('detectiontechnology')};
+  if(map.set<0)throw new Error('Column "SetNumber" not found in this file.');
+  const miss=['rec','snd','time','sub'].filter(k=>map[k]<0);
+  if(miss.length)throw new Error('Missing expected column(s): '+miss.join(', '));
+  const g=(r,k)=>map[k]>=0?(r[map[k]]||'').trim():'';
+  return rows.slice(1).map(r=>({set:g(r,'set'),rec:g(r,'rec'),snd:g(r,'snd'),ip:g(r,'ip'),time:g(r,'time'),sub:g(r,'sub'),qr:g(r,'qr'),det:g(r,'det')})).filter(o=>o.set!=='');
+}
+
+/* ---------- Template generation ---------- */
+const cleanTime=t=>t.replace(/\.\d{3}(?=\s*[AP]M)/i,'');
+function detTech(raw){
+  if(!raw)return 'N/A';
+  try{
+    const o=JSON.parse(raw);
+    const parts=Object.entries(o).map(([k,v])=>`${k}: ${[].concat(v).join(', ')}`);
+    return parts.length?parts.join(' | '):raw;
+  }catch(e){return raw;}
+}
+const nameFrom=e=>e.split('@')[0].split(/[._-]/).filter(Boolean).map(p=>p[0].toUpperCase()+p.slice(1)).join(' ');
+function generate(){
+  const sel=$('section').value;
+  const rows=data.filter(r=>r.set===sel);
+  $('sSel').textContent=rows.length;
+  const recs=[...new Set(rows.map(r=>r.rec).filter(Boolean))];
+  $('sRec').textContent=recs.length;
+  if(!rows.length){return;}
+  const multi=recs.length>1;
+  let d=`Hi Team,\nSOC team has observed **"Quarantined Emails"**\nUser: ${recs.map(nameFrom).join(', ')}\nRecipient: ${recs.map(defangDots).join(', ')}\n\n`;
+  let a='';
+  rows.forEach((r,i)=>{
+    d+=`**Email ${i+1}:**\n`;
+    if(multi)d+=`Recipient: ${defangDots(r.rec)}\n`;
+    d+=`Sender address: ${defangDots(r.snd)}\nSubject line: ${r.sub}\nTime received: ${cleanTime(r.time)}\n\n`;
+    a+=`**Email ${i+1}**\n`;
+    if(multi)a+=`Recipient: ${r.rec}\n`;
+    a+=`Sender Address: ${r.snd}\nTime Received: ${cleanTime(r.time)}\nSender IP: ${r.ip||'N/A'}\nSubject Line: ${r.sub}\nReputation: Domain is Safe | IP is Safe\nObservation: \nQuarantine Reason: ${r.qr||'N/A'}\nDetection technologies: ${detTech(r.det)}\n\n`;
+  });
+  store.desc=d.trim();store.anal=a.trim();
+  $('descBox').innerHTML=render(store.desc);
+  $('analBox').innerHTML=render(store.anal);
+  $('outgrid').classList.remove('hide');$('empty').classList.add('hide');
+}
+
+/* ---------- File handling ---------- */
+function msg(t,cls){$('fileMsg').innerHTML=t?`<div class="msg ${cls}">${esc(t)}</div>`:'';}
+function loadFile(f){
+  if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const rows=parseCSV(String(rd.result));
+      if(rows.length<2)throw new Error('The file has no data rows.');
+      data=toObjects(rows);
+      const counts={};data.forEach(r=>counts[r.set]=(counts[r.set]||0)+1);
+      const keys=Object.keys(counts).sort((x,y)=>x-y);
+      const s=$('section');
+      s.innerHTML=keys.map(k=>`<option value="${esc(k)}">Section ${esc(k)} — ${counts[k]} emails</option>`).join('');
+      s.disabled=false;
+      $('sTotal').textContent=data.length;$('sSecs').textContent=keys.length;
+      $('stats').classList.remove('hide');
+      msg(`Loaded ${f.name}: ${data.length} rows, ${keys.length} sections.`,'good');
+      generate();
+    }catch(e){
+      msg(e.message,'err');data=[];
+      $('section').innerHTML='<option>Load a CSV first</option>';$('section').disabled=true;
+      $('stats').classList.add('hide');$('outgrid').classList.add('hide');$('empty').classList.remove('hide');
+    }
+  };
+  rd.readAsText(f);
+}
+const drop=$('drop');
+drop.onclick=()=>$('file').click();
+$('file').onchange=e=>{loadFile(e.target.files[0]);e.target.value='';};
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over');}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over');}));
+drop.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
+$('section').onchange=generate;
+
+/* ---------- Defang ---------- */
+$('dfBtn').onclick=()=>{
+  const out=$('dfOut');
+  let t=$('dfIn').value;
+  if(!t.trim()){out.textContent='Please paste data to defang.';return;}
+  t=t.replace(/\*\*/g,'').replace(/<\/?b>/gi,'');
+  t=t.replace(/(\[+)\.(\]+)([ \n]|$)/g,'.$3');
+  t=t.replace(/(\[+)\.(\]+)/g,'###DOT###');
+  t=t.replace(/http/gi,'hxxp').replace(/\./g,'[.]');
+  t=t.replace(/\[\.\]([ \n]|$)/g,'.$1');
+  t=t.replace(/###DOT###/g,'[.]');
+  t=t.replace(/(Email \d+:?)/gi,'**$1**').replace(/(Observation:)/gi,'**$1**');
+  store.df=t.trim();
+  out.style.color='';out.innerHTML=render(store.df);
+};
+
+/* ---------- Copy ---------- */
+async function copyText(t){
+  try{await navigator.clipboard.writeText(t);}
+  catch(e){const x=document.createElement('textarea');x.value=t;x.style.cssText='position:absolute;left:-9999px';document.body.appendChild(x);x.select();try{document.execCommand('copy');}catch(_){}document.body.removeChild(x);}
+}
+function flash(btn){const o=btn.textContent;btn.textContent='Copied!';btn.classList.add('ok');setTimeout(()=>{btn.textContent=o;btn.classList.remove('ok');},1800);}
+$('copyKql').onclick=async e=>{await copyText(kqlText);flash(e.currentTarget);};
+document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{await copyText(store[b.dataset.copy]||'');flash(b);});
+
+/* ---------- Theme ---------- */
+(function(){
+  const root=document.documentElement;let saved=null;
+  try{saved=localStorage.getItem('theme');}catch(e){}
+  const sys=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  function set(t){root.setAttribute('data-theme',t);$('themeBtn').textContent=t==='dark'?'☀ Light mode':'☾ Dark mode';}
+  set(saved||sys);
+  $('themeBtn').onclick=()=>{const t=root.getAttribute('data-theme')==='dark'?'light':'dark';set(t);try{localStorage.setItem('theme',t);}catch(e){}};
+})();
+</script>
+</body>
+</html>
